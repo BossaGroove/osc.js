@@ -109,7 +109,7 @@
         that.emit("ready");
     };
 
-    p.sendRaw = function (encoded, address, port) {
+    p.sendRaw = function (encoded, address, port, callback) {
         if (!this.socket) {
             osc.fireClosedPortSendError(this);
             return;
@@ -124,6 +124,10 @@
         this.socket.send(encoded, 0, length, port, address, function (err) {
             if (err) {
                 that.emit("error", err);
+                return;
+            }
+            if (callback) {
+                callback();
             }
         });
     };
